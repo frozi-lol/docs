@@ -1,0 +1,185 @@
+---
+title: "Usage Guides"
+description: "Examples and guides on how to use the frozi.lol API"
+icon: code
+---
+
+## Getting Started
+
+Before using the API, you need to obtain an API key. Follow these steps:
+
+1. Sign in at [frozi.lol](https://frozi.lol)
+2. Navigate to **Dashboard → Developer Platform → API Keys**
+3. Click **Request API key** and fill in the required details
+4. Select the permissions you need (`api.leaderboard` or `api.lookup`)
+5. Submit the request and wait for admin approval
+6. Once approved, you'll receive your secret key via email
+
+Store your API key securely and include it in all requests using the `Authorization: Bearer <API_KEY>` header.
+
+## Making Your First Request
+
+Here's a simple curl example to fetch the leaderboard:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/leaderboard?limit=5
+```
+
+Replace `YOUR_API_KEY` with your actual key. This should return a JSON response with the top 5 profiles.
+
+## Endpoint Examples
+
+### Leaderboard
+
+The leaderboard endpoint returns top profiles by view count. [API Reference →](/api-reference/endpoint/leaderboard)
+
+**Curl:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/leaderboard
+```
+
+**Python:**
+```python
+import requests
+
+url = "https://frozi.lol/api/leaderboard"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+data = response.json()
+
+print(f"Top profile: {data['topProfiles'][0]['username']}")
+```
+
+**JavaScript (Node.js):**
+```javascript
+const axios = require('axios');
+
+const url = 'https://frozi.lol/api/leaderboard';
+const headers = { Authorization: 'Bearer YOUR_API_KEY' };
+
+axios.get(url, { headers })
+  .then(response => {
+    console.log('Top profiles:', response.data.topProfiles);
+  })
+  .catch(error => {
+    console.error('Error:', error.response.data);
+  });
+```
+
+### Profile Lookup by Username
+
+Fetch a profile by username or alias. [API Reference →](/api-reference/endpoint/lookup-username)
+
+**Curl:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/lookup/username/exampleuser
+```
+
+**Python:**
+```python
+import requests
+
+username = "exampleuser"
+url = f"https://frozi.lol/api/lookup/username/{username}"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+profile = response.json()
+
+print(f"Display name: {profile['displayName']}")
+print(f"Views: {profile['viewsCount']}")
+```
+
+### Profile Lookup by UID
+
+Fetch a profile by numeric profile ID. [API Reference →](/api-reference/endpoint/lookup-uid)
+
+**Curl:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/lookup/uid/12345
+```
+
+### Profile Lookup by Auth ID
+
+Fetch a profile by auth UUID. [API Reference →](/api-reference/endpoint/lookup-auth-id)
+
+**Curl:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/lookup/auth-id/550e8400-e29b-41d4-a716-446655440000
+```
+
+### Profile Links
+
+Get the public links for a profile. [API Reference →](/api-reference/endpoint/lookup-links)
+
+**Curl:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://frozi.lol/api/lookup/username/exampleuser/links
+```
+
+**Python:**
+```python
+import requests
+
+username = "exampleuser"
+url = f"https://frozi.lol/api/lookup/username/{username}/links"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+links_data = response.json()
+
+for link in links_data['links']:
+    print(f"{link['name']}: {link['link']}")
+```
+
+## Error Handling
+
+All API errors return a JSON object with an `error` field. See the full [Error Reference](/api-reference/errors) for status codes and formats.
+
+```json
+{
+  "error": "Human-readable error message"
+}
+```
+
+**Python example with error handling:**
+```python
+import requests
+
+url = "https://frozi.lol/api/leaderboard"
+headers = {"Authorization": "Bearer INVALID_KEY"}
+
+try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    data = response.json()
+    # Process data
+except requests.exceptions.HTTPError as err:
+    error_msg = err.response.json().get('error', 'Unknown error')
+    print(f"API Error: {error_msg}")
+```
+
+Common HTTP status codes:
+- **401**: Invalid or missing API key
+- **403**: Key lacks required permissions
+- **404**: Profile or resource not found
+- **429**: Rate limit exceeded
+
+## Rate Limiting
+
+The API has rate limits per IP and per API key. If you exceed the limit, you'll receive a 429 status code. Monitor your usage and implement exponential backoff if needed.
+
+## Best Practices
+
+- Store your API key securely (environment variables, not in code)
+- Handle errors gracefully in your application
+- Cache responses where appropriate to reduce API calls
+- URL-encode usernames and other path parameters
+- Respect rate limits and implement retry logic

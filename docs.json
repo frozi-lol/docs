@@ -19,7 +19,7 @@
         "groups": [
           {
             "group": "Guides",
-            "pages": ["index", "development"]
+            "pages": ["index", "development", "api-reference/guides"]
           }
         ]
       },
