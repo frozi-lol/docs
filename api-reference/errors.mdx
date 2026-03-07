@@ -1,0 +1,29 @@
+---
+title: "Errors"
+description: "Error response format and status codes for the frozi.lol API"
+---
+
+## Error response format
+
+For all documented API routes, error responses use a JSON body with a single **`error`** field:
+
+```json
+{
+  "error": "Human-readable message"
+}
+```
+
+## HTTP status codes
+
+| Code | Meaning |
+|------|--------|
+| **400** | Bad request — invalid parameters (e.g. invalid username, UID, or auth ID) |
+| **401** | Unauthorized — missing or invalid API key |
+| **403** | Forbidden — key valid but missing required permission (`api.leaderboard` or `api.lookup`) |
+| **404** | Not found — user or resource not found (e.g. profile by username/UID/authId) |
+| **429** | Rate limit exceeded — too many requests (per IP or per key) |
+| **500** | Internal server error — e.g. failed to fetch leaderboard or other server failure |
+| **502** | Bad gateway — upstream error |
+| **503** | Service unavailable |
+
+Always check the `error` field in the response body for a human-readable description of what went wrong.

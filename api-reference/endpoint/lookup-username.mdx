@@ -1,0 +1,8 @@
+---
+title: "Profile by username"
+openapi: "GET /lookup/username/{username}"
+---
+
+Returns a **SimplifiedProfile** by primary username or profile alias. Requires permission **`api.lookup`**. Use URL-encoded `username` in the path.
+
+`followersCount` is `null` if the profile has “show followers count” disabled. Email and other private fields are never returned.

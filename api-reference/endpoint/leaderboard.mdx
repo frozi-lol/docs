@@ -1,0 +1,8 @@
+---
+title: "Leaderboard"
+openapi: "GET /leaderboard"
+---
+
+Returns top profiles by view count. Requires permission **`api.leaderboard`**. Data may be cached (e.g. Redis). Non-cache errors return 500 with `{ "error": "Failed to fetch leaderboard" }`.
+
+Only badges with `name === "verified"` or `name === "team"` are included. `assets.pfp` is `null` for the default avatar.

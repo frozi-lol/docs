@@ -7,6 +7,10 @@
     "light": "#4da6ff",
     "dark": "#0080ff"
   },
+  "banner": {
+    "content": "Please ensure that its very early stage of documentation and will be updated regularly. If you want to help by contributing go to the [github repository](https://github.com/frozi-lol/docs)",
+    "dismissible": true
+  },
   "favicon": "/favicon.ico",
   "navigation": {
     "tabs": [
@@ -15,18 +19,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "pages": ["index", "quickstart", "development"]
           },
           {
             "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
+            "pages": ["essentials/settings", "essentials/navigation"]
           },
           {
             "group": "Writing content",
@@ -51,19 +48,29 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+              "api-reference/authentication",
+              "api-reference/api-keys"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Leaderboard Endpoints",
+            "pages": ["api-reference/endpoint/leaderboard"]
+          },
+          {
+            "group": "Lookup Endpoints",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/lookup-username",
+              "api-reference/endpoint/lookup-uid",
+              "api-reference/endpoint/lookup-auth-id",
+              "api-reference/endpoint/lookup-links"
             ]
+          },
+          {
+            "group": "Error Responses",
+            "pages": ["api-reference/errors"]
           }
         ]
       }
@@ -74,30 +81,38 @@
     "dark": "/logo/dark.png"
   },
   "navbar": {
-    "links": [],
+    "links": [
+      {
+        "label": "Home",
+        "href": "https://frozi.lol"
+      },
+      {
+        "label": "Developer Platform",
+        "href": "https://frozi.lol/dashboard/developer"
+      }
+    ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://frozi.lol/dashboard"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/frozi-lol/docs",
+      "discord": "https://discord.gg/ttURmxuR4T"
     }
   },
   "description": "Need assistance? Start by browsing answers to frequently asked questions. Whether you're configuring an integration, managing user data, or exploring API capabilities — we’ve got your back.",

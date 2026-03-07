@@ -1,0 +1,56 @@
+---
+title: "API keys"
+description: "How to request and manage API keys for the frozi.lol API"
+icon: key
+---
+
+## Getting an API key
+
+API keys are requested through the frozi.lol dashboard and **approved by an admin**. Permissions and rate limits are set when your key is approved.
+
+### Step 1: Sign in and open API Keys
+
+1. Sign in at [frozi.lol](https://frozi.lol).
+2. Go to **Dashboard → Developer Platform → API Keys**.
+
+### Step 2: Request a key
+
+1. Click **Request API key**.
+2. In the modal, fill in:
+   - **Name** (required, max 255 characters)
+   - **Description** (required, 80–2000 characters)
+   - **Permissions** — select at least one:
+     - **Leaderboard** — for `GET /api/leaderboard`
+     - **Lookup** — for profile and links lookup endpoints
+   - Optional: project URL, expected usage.
+
+3. Submit the request. Your key will appear as **pending** until an admin approves it.
+
+### Step 3: After approval
+
+- When an admin approves your request, the **secret key** is generated and sent to you **once** in an email. Store it securely; it cannot be shown again.
+- In the dashboard, the key appears as **Active**. You will see a key **identifier** (e.g. prefix/suffix) for reference — not the secret itself.
+
+You can then use the secret key in the `Authorization: Bearer <API_KEY>` header for your requests.
+
+## Key management
+
+- You can have up to **3 API keys per profile**.
+- You can **edit the key name** from the dashboard.
+- Permissions and rate limits are set by the admin when approving the key.
+
+<Info>
+  If you lose your secret key, you must create a new key request; the original secret cannot be retrieved.
+</Info>
+
+## Summary
+
+| Item | Details |
+|------|--------|
+| Where to request | Dashboard → Developer Platform → API Keys |
+| Approval | Keys are approved by an admin; you receive the secret once by email |
+| Max keys per profile | 3 |
+| Editable | Name only (from dashboard) |
+| Permissions / rate limits | Set by admin when approving the key |
+
+For how to send the key in requests and which permissions apply to which endpoints, see [Authentication](/api-reference/authentication).

@@ -1,16 +1,14 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "frozi.lol API",
+    "description": "REST API for frozi.lol. Access profile data, leaderboard, and profile-related content (e.g. links). All endpoints require a valid API key.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://frozi.lol/api",
+      "description": "Production"
     }
   ],
   "security": [
@@ -18,135 +16,195 @@
       "bearerAuth": []
     }
   ],
+  "tags": [
+    {
+      "name": "Leaderboard",
+      "description": "Top profiles by view count"
+    },
+    {
+      "name": "Lookup",
+      "description": "Profile and links lookup by username, UID, or auth ID"
+    }
+  ],
   "paths": {
-    "/plants": {
+    "/leaderboard": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags": ["Leaderboard"],
+        "summary": "Get leaderboard",
+        "description": "Returns top profiles by view count. **Permission required:** `api.leaderboard`. Data may be cached (e.g. Redis).",
+        "operationId": "getLeaderboard",
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Max number of profiles to return (1–100). Default 100.",
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Leaderboard response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
+                "schema": { "$ref": "#/components/schemas/LeaderboardResponse" }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
+          "Error": {
+            "description": "Error response. See [Errors](/api-reference/errors) for status codes and format.",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/lookup/username/{username}": {
+      "get": {
+        "tags": ["Lookup"],
+        "summary": "Profile by username",
+        "description": "Returns a simplified profile by primary username or alias. **Permission required:** `api.lookup`.",
+        "operationId": "lookupByUsername",
         "parameters": [
           {
-            "name": "id",
+            "name": "username",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "Primary username or profile alias (URL-encoded)",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Simplified profile",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/SimplifiedProfile" }
+              }
+            }
+          },
+          "Error": {
+            "description": "Error response. See [Errors](/api-reference/errors) for status codes and format.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+    },
+    "/lookup/uid/{uid}": {
+      "get": {
+        "tags": ["Lookup"],
+        "summary": "Profile by UID",
+        "description": "Returns a simplified profile by numeric profile ID (UID). **Permission required:** `api.lookup`.",
+        "operationId": "lookupByUid",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Numeric profile ID (e.g. 12345)",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[0-9]+$" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simplified profile",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SimplifiedProfile" }
+              }
+            }
+          },
+          "Error": {
+            "description": "Error response. See [Errors](/api-reference/errors) for status codes and format.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/lookup/auth-id/{authId}": {
+      "get": {
+        "tags": ["Lookup"],
+        "summary": "Profile by auth ID",
+        "description": "Returns a simplified profile by auth UUID. **Permission required:** `api.lookup`.",
+        "operationId": "lookupByAuthId",
+        "parameters": [
+          {
+            "name": "authId",
+            "in": "path",
+            "description": "Auth UUID (v4)",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "Simplified profile",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SimplifiedProfile" }
+              }
+            }
+          },
+          "Error": {
+            "description": "Error response. See [Errors](/api-reference/errors) for status codes and format.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lookup/username/{username}/links": {
+      "get": {
+        "tags": ["Lookup"],
+        "summary": "Profile links by username",
+        "description": "Returns the public links array for the profile identified by username. **Permission required:** `api.lookup`.",
+        "operationId": "lookupLinksByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Primary username or alias (URL-encoded)",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile links",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileLinksResponse"
+                }
+              }
+            }
+          },
+          "Error": {
+            "description": "Error response. See [Errors](/api-reference/errors) for status codes and format.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
           }
         }
       }
@@ -154,55 +212,108 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "SimplifiedProfile": {
+        "type": "object",
+        "description": "Public profile representation. Email and other private fields are never returned.",
+        "properties": {
+          "id": { "type": "integer", "description": "Profile ID" },
+          "username": { "type": "string" },
+          "displayName": { "type": "string" },
+          "badges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "enabled": { "type": "boolean" }
+              }
+            }
+          },
+          "assets": {
+            "type": "object",
+            "additionalProperties": { "type": "string", "nullable": true }
+          },
+          "customize": { "type": "object" },
+          "discordID": { "type": "string", "nullable": true },
+          "discordClean": { "type": "object" },
+          "banned": { "type": "boolean" },
+          "viewsCount": { "type": "number" },
+          "followersCount": {
+            "type": "number",
+            "nullable": true,
+            "description": "Null if profile has 'show followers count' disabled"
+          },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "LeaderboardBadge": {
         "type": "object",
         "properties": {
           "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+            "type": "string",
+            "description": "Only 'verified' or 'team' are included"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "LeaderboardItem": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "displayName": { "type": "string" },
+          "viewsCount": { "type": "number" },
+          "badges": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/LeaderboardBadge" }
           },
-          {
-            "required": [
-              "id"
-            ],
+          "assets": {
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "pfp": {
+                "type": "string",
+                "nullable": true,
+                "description": "Null if default avatar"
               }
             }
           }
-        ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "LeaderboardResponse": {
         "type": "object",
         "properties": {
+          "topProfiles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/LeaderboardItem" }
+          }
+        }
+      },
+      "ProfileLink": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "link": { "type": "string" },
+          "title": { "type": "string", "nullable": true },
+          "image": { "type": "string", "nullable": true },
+          "clicksCount": { "type": "number" },
+          "linkMode": { "type": "string" }
+        }
+      },
+      "ProfileLinksResponse": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProfileLink" }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
           "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable error message"
           }
         }
       }
@@ -210,7 +321,9 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "bearerFormat": "API Key",
+        "description": "API key from Dashboard → Developer Platform → API Keys. Send as: Authorization: Bearer <API_KEY>"
       }
     }
   }

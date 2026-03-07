@@ -1,26 +1,35 @@
 ---
 title: "Introduction"
-description: "frozi.lol API Reference Documentation"
+description: "frozi.lol API Reference — profile data, leaderboard, and links"
+icon: book
 ---
 
 <Note>
-  Welcome to the [frozi.lol](http://frozi.lol) API documentation. This section covers all available endpoints related to users and associated functionality.
+  The frozi.lol API lets developers access **profile data**, **leaderboard**, and **profile-related content** (e.g. links) via a REST API. All endpoints are protected by API keys (managed in the dashboard).
 </Note>
 
-## Welcome
+## What is the frozi.lol API?
 
-The [frozi.lol](http://frozi.lol) API lets you interact with user-related data and features across the platform. It supports things like profiles, rankings, and more. Every endpoint is secured with API key authentication and returns JSON-formatted responses.
+The [frozi.lol](https://frozi.lol) API is a REST API that provides:
 
-## Authentication
+- **Leaderboard** — top profiles by view count
+- **Lookup** — profile by username, UID, or auth ID
+- **Profile links** — public links for a profile by username
 
-All API endpoints are **authenticated using Bearer tokens** passed as a **HTTP header**.
+Every request must include a valid API key. Keys are created and managed in the frozi.lol dashboard and are assigned permissions (`api.leaderboard`, `api.lookup`). Rate limiting applies.
 
-```json
-{
-  "Authorization": "Bearer ..."
-}
+## Base URL
+
+All endpoints are relative to:
+
+```
+https://frozi.lol/api
 ```
 
-<Info>
-  API keys are issued through the [frozi.lol](http://frozi.lol) Discord server. To get one, create a support ticket and share some basic info about your project, including what it does, how you intend to use the API, expected usage (like user count), and a link to your site if you have one.
-</Info>
+Example: the leaderboard endpoint is `GET https://frozi.lol/api/leaderboard`.
+
+## Next steps
+
+1. [Get an API key](/api-reference/api-keys) — request a key in the dashboard and use it in your requests.
+2. [Authentication](/api-reference/authentication) — how to send the API key (Bearer) and which permissions are required.
+3. Browse [Leaderboard](/api-reference/endpoint/leaderboard) and [Lookup](/api-reference/endpoint/lookup-username) endpoints in the sidebar.

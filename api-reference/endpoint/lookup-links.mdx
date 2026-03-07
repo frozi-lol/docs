@@ -1,0 +1,8 @@
+---
+title: "Profile links by username"
+openapi: "GET /lookup/username/{username}/links"
+---
+
+Returns the public **links** array for the profile identified by username (or alias). Requires permission **`api.lookup`**. Use URL-encoded `username` in the path.
+
+Each link includes `id`, `name`, `link`, and optionally `title`, `image`, `clicksCount`, `linkMode`.
