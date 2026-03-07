@@ -178,8 +178,30 @@ The API has rate limits per IP and per API key. If you exceed the limit, you'll 
 
 ## Best Practices
 
-- Store your API key securely (environment variables, not in code)
-- Handle errors gracefully in your application
-- Cache responses where appropriate to reduce API calls
-- URL-encode usernames and other path parameters
-- Respect rate limits and implement retry logic
+Follow these guidelines to use the API effectively and securely:
+
+### Security
+- **Never share your API key publicly** — Do not post it in forums, GitHub repositories, client-side code, or any public location. If compromised, regenerate it immediately from the dashboard.
+- **Store API keys securely** — Use environment variables or secure key management systems. Never hardcode keys in your source code.
+- **Use HTTPS always** — All API requests must use `https://` to protect your API key in transit.
+- **Request minimal permissions** — Only select the permissions you need (`api.leaderboard` or `api.lookup`) when creating your API key.
+
+### Rate Limiting & Performance
+- **Respect rate limits** — The API enforces limits per IP and API key. Exceeding them results in 429 errors.
+- **Implement exponential backoff** — When rate limited, wait longer between retry attempts (e.g., 1s, 2s, 4s, 8s).
+- **Cache responses appropriately** — For leaderboard data that doesn't change frequently, cache responses to reduce API calls.
+- **Monitor your usage** — Track API call volume and set up alerts for unusual patterns.
+- **Avoid unnecessary requests** — Don't poll for the same data repeatedly; use caching or webhooks if available.
+
+### Error Handling
+- **Handle errors gracefully** — Check HTTP status codes and parse error messages from the response body.
+- **Implement proper retry logic** — Retry on network errors, but not on 4xx client errors (except 429).
+- **Log errors appropriately** — Record API errors for debugging, but don't expose sensitive information.
+
+### Development
+- **Test with care** — Use test/development API keys during development to avoid affecting production limits.
+- **URL-encode parameters** — Always encode usernames and other path parameters to handle special characters.
+- **Validate input** — Sanitize and validate all user input before making API calls.
+- **Keep dependencies updated** — Use current versions of HTTP libraries and keep your code secure.
+
+By following these practices, you'll ensure reliable, secure, and efficient use of the frozi.lol API.
