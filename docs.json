@@ -7,10 +7,6 @@
     "light": "#4da6ff",
     "dark": "#0080ff"
   },
-  "banner": {
-    "content": "Please ensure that its very early stage of documentation and will be updated regularly. If you want to help by contributing go to the [github repository](https://github.com/frozi-lol/docs)",
-    "dismissible": true
-  },
   "favicon": "/favicon.ico",
   "navigation": {
     "tabs": [
