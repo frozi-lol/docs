@@ -323,7 +323,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "API Key",
-        "description": "API key from Dashboard → Developer Platform → API Keys. Send as: Authorization: Bearer <API_KEY>"
+        "description": "API key from Dashboard → Settings → Developer. Send as: Authorization: Bearer <API_KEY>"
       }
     }
   }

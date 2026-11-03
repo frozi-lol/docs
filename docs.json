@@ -62,8 +62,8 @@
         "href": "https://frozi.lol"
       },
       {
-        "label": "Developer Platform",
-        "href": "https://frozi.lol/dashboard/developer"
+        "label": "Developer Settings",
+        "href": "https://frozi.lol/dashboard/settings/developer"
       }
     ],
     "primary": {

@@ -6,25 +6,25 @@ icon: key
 
 ## Getting an API key
 
-API keys are requested through the frozi.lol dashboard and **approved by an admin**. Permissions and rate limits are set when your key is approved.
+API keys are requested from your frozi.lol dashboard under **Settings → Developer** and **approved by an admin**. Permissions and rate limits are set when your key is approved.
 
-### Step 1: Sign in and open API Keys
+### Step 1: Open the Developer settings
 
 1. Sign in at [frozi.lol](https://frozi.lol).
-2. Go to **Dashboard → Developer Platform → API Keys**.
+2. Open your [dashboard](https://frozi.lol/dashboard) and go to **Settings → [Developer](https://frozi.lol/dashboard/settings/developer)**.
 
 ### Step 2: Request a key
 
-1. Click **Request API key**.
+1. Click **Request API key** in the page header.
 2. In the modal, fill in:
-   - **Name** (required, max 255 characters)
-   - **Description** (required, 80–2000 characters)
-   - **Permissions** — select at least one:
+   - **Key name** (required)
+   - **Requested permissions** — select at least one:
      - **Leaderboard** — for `GET /api/leaderboard`
      - **Lookup** — for profile and links lookup endpoints
-   - Optional: project URL, expected usage.
+   - **Description** — what you will use the API for
+   - **Project / site URL** and **Expected usage** (e.g. `~500 users`)
 
-3. Submit the request. Your key will appear as **pending** until an admin approves it.
+3. Submit the request. Your key will appear as **Pending** in the keys table until an admin approves it.
 
 ### Step 3: After approval
 
@@ -35,8 +35,9 @@ You can then use the secret key in the `Authorization: Bearer <API_KEY>` header 
 
 ## Key management
 
+- The **Settings → Developer** page shows your total, active and pending keys.
 - You can have up to **3 API keys per profile**.
-- You can **edit the key name** from the dashboard.
+- You can **edit the key name** or **delete a key** from the keys table.
 - Permissions and rate limits are set by the admin when approving the key.
 
 <Info>
@@ -47,10 +48,10 @@ You can then use the secret key in the `Authorization: Bearer <API_KEY>` header 
 
 | Item | Details |
 |------|--------|
-| Where to request | Dashboard → Developer Platform → API Keys |
+| Where to request | Dashboard → Settings → Developer |
 | Approval | Keys are approved by an admin; you receive the secret once by email |
 | Max keys per profile | 3 |
-| Editable | Name only (from dashboard) |
+| Editable | Name only (from Settings → Developer) |
 | Permissions / rate limits | Set by admin when approving the key |
 
 For how to send the key in requests and which permissions apply to which endpoints, see [Authentication](/api-reference/authentication).

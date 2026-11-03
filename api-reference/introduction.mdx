@@ -5,7 +5,7 @@ icon: book
 ---
 
 <Note>
-  The frozi.lol API lets developers access **profile data**, **leaderboard**, and **profile-related content** (e.g. links) via a REST API. All endpoints are protected by API keys (managed in the dashboard).
+  The frozi.lol API lets developers access **profile data**, **leaderboard**, and **profile-related content** (e.g. links) via a REST API. All endpoints are protected by API keys (managed in your dashboard under **Settings → Developer**).
 </Note>
 
 ## What is the frozi.lol API?
@@ -16,7 +16,7 @@ The [frozi.lol](https://frozi.lol) API is a REST API that provides:
 - **Lookup** — profile by username, UID, or auth ID
 - **Profile links** — public links for a profile by username
 
-Every request must include a valid API key. Keys are created and managed in the frozi.lol dashboard and are assigned permissions (`api.leaderboard`, `api.lookup`). Rate limiting applies.
+Every request must include a valid API key. Keys are created and managed in the frozi.lol dashboard under **Settings → Developer** and are assigned permissions (`api.leaderboard`, `api.lookup`). Rate limiting applies.
 
 ## Base URL
 
@@ -30,6 +30,6 @@ Example: the leaderboard endpoint is `GET https://frozi.lol/api/leaderboard`.
 
 ## Next steps
 
-1. [Get an API key](/api-reference/api-keys) — request a key in the dashboard and use it in your requests.
+1. [Get an API key](/api-reference/api-keys) — request a key under **Settings → Developer** in your dashboard and use it in your requests.
 2. [Authentication](/api-reference/authentication) — how to send the API key (Bearer) and which permissions are required.
 3. Browse [Leaderboard](/api-reference/endpoint/leaderboard) and [Lookup](/api-reference/endpoint/lookup-username) endpoints in the sidebar.
